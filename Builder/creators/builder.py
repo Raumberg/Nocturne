@@ -75,7 +75,7 @@ class SystemConfiguration:
                           "~/Music ~/Desktop"
         os.system("mkdir -p ~/.config")
         os.system(f"mkdir -p {default_folders}")
-        os.system("cp -r Images/ ~/")
+        os.system("cp -r imgs/ ~/")
 
     @staticmethod
     def __copy_nocturne_dotfiles():
