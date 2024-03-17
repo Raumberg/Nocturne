@@ -19,7 +19,7 @@
 </br>
 
  - OS: [**`Arch Linux`**](https://archlinux.org/)
- - WM: [**`BSPWM`**](https://github.com/baskerville/bspwm)
+ - WM: [**`Hyprland`**]
  - Bar: [**`Polybar`**](https://github.com/polybar/polybar)
  - Compositor: [**`Picom`**](https://github.com/yshui/picom)
  - Terminal: [**`Alacritty`**](https://github.com/alacritty/alacritty)
