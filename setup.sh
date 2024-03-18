@@ -104,6 +104,14 @@ if [[ $STAR == "Y" || $STAR == "y" ]]; then
     echo -e "[!] Starship initialized.\n"
 fi
 
+### Install Firefox theme ###
+rean -n1 -rep '[+] Set up Firef0x themes? (y,n): ' FIRE
+if [[ $FIRE == "Y" || $FIRE == "y" ]]; then
+    timeout 10 firefox --headless
+    sh firefox/install.sh
+    echo -e "[!] Firefox themes installed.\n"
+fi
+    
 ### Building is done ###
 echo -e "[!] [N0cturne] is assembled.\n"
 echo -e "[!] Start by typing Hyprland (note the capital H).\n"
