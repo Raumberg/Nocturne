@@ -47,7 +47,7 @@ fi
 ### Install all of the above pacakges ####
 read -n1 -rep '[+] Set up [N0cturne] envir0nment? (y,n): ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
-    yay -S --noconfirm hyprland alacritty waybar fish automake tmux libreoffice \      # polybar
+    yay -S --noconfirm hyprland alacritty waybar automake tmux libreoffice spacevim \      # polybar
     swaybg swaylock-effects rofi wlogout mako thunar dunst fakeroot feh code neovim \
     ttf-jetbrains-mono-nerd ttf-jetbrains-mono noto-fonts-emoji firefox obsidian flameshot \
     polkit-gnome python-requests starship tree lsd calc neofetch gcc gedit python-pip ipython bpython \
@@ -59,7 +59,16 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     echo -e "[?] Messing with XDG p0rtals...\n"
     yay -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
     echo -e "[!] P0rtals ready.\n"
+
+    # Mess with terminals
+    sudo ln -sf /usr/bin/alacritty /usr/bin/xterm
 fi
+
+read -n1 -rep '[+] Set up Rust? (y,n): ' RST
+if [[ $RST == "Y" || $RST == "y" ]]; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rust.sh # echo???
+    ./rust.sh
+    echo -e "[!] Rust is ready.\n"
 
 ### Copy Config Files ###
 read -n1 -rep '[+] Set up [N0cturne] c0nfig files? (y,n): ' CFG
@@ -67,7 +76,6 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
     echo -e "[?] Building c0nfig files...\n"
     cp -R Nocturne/config ~/.config/
     echo -e "[!] C0nfig is ready.\n"
-    #cp -R kitty ~/.config/
     #cp -R mako ~/.config/
     #cp -R waybar ~/.config/
     #cp -R swaylock ~/.config/
@@ -79,19 +87,26 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
     chmod +x ~/.config/waybar/scripts/waybar-wttr.py
 fi
 
-### Install teh starship shell ###
+### Install starship shell ###
 read -n1 -rep '[+] Set up starship shell? (y,n): ' STAR
 if [[ $STAR == "Y" || $STAR == "y" ]]; then
     # install the starship shell
     echo -e "[?] Updating .bashrc...\n"
     echo -e '\neval "$(starship init bash)"' >> ~/.bashrc
-    echo -e "[?] C0pying starship c0nfig file to ~/.confg ...\n"
+    echo -e "[?] C0pying starship c0nfig file t0 ~/.confg ...\n"
     cp starship.toml ~/.config/
+    echo -e "[?] C0pying and initializing c0l0rs for starship..."
+    git clone https://gitlab.com/dwt1/shell-color-scripts.git
+    cd shell-color-scripts
+    rm -rf /opt/shell-color-scripts || return 1
+    sudo mkdir -p /opt/shell-color-scripts/colorscripts || return 1
+    sudo cp -rf colorscripts/* /opt/shell-color-scripts/colorscripts
+    sudo cp colorscript.sh /usr/bin/colorscript                          # colorscript -e crunch add to ~/.bashrc https://habr.com/ru/companies/cloud4y/articles/574450/
     echo -e "[!] Starship initialized.\n"
 fi
 
-### Script is done ###
-echo -e "[!] [N0cturne] is ready.\n"
+### Building is done ###
+echo -e "[!] [N0cturne] is assembled.\n"
 echo -e "[!] Start by typing Hyprland (note the capital H).\n"
 read -n1 -rep '[+] M00nlight is waiting for you... Ready? (y,n): ' HYP
 if [[ $HYP == "Y" || $HYP == "y" ]]; then
