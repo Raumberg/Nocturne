@@ -79,10 +79,6 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
     echo -e "[?] Building c0nfig files...\n"
     cp -R Nocturne/config ~/.config/
     echo -e "[!] C0nfig is ready.\n"
-    #cp -R mako ~/.config/
-    #cp -R waybar ~/.config/
-    #cp -R swaylock ~/.config/
-    #cp -R wofi ~/.config/
     
     # Set some files as exacutable 
     echo -e "[?] C0mpiling .exec files...\n"
@@ -98,13 +94,13 @@ if [[ $STAR == "Y" || $STAR == "y" ]]; then
     echo -e '\neval "$(starship init bash)"' >> ~/.bashrc
     echo -e "[?] C0pying starship c0nfig file t0 ~/.confg ...\n"
     cp starship.toml ~/.config/
-    echo -e "[?] C0pying and initializing c0l0rs for starship..."
-    git clone https://gitlab.com/dwt1/shell-color-scripts.git
-    cd shell-color-scripts
-    rm -rf /opt/shell-color-scripts || return 1
-    sudo mkdir -p /opt/shell-color-scripts/colorscripts || return 1
-    sudo cp -rf colorscripts/* /opt/shell-color-scripts/colorscripts
-    sudo cp colorscript.sh /usr/bin/colorscript                          # colorscript -e crunch add to ~/.bashrc https://habr.com/ru/companies/cloud4y/articles/574450/
+    # echo -e "[?] C0pying and initializing c0l0rs for starship..."
+    # git clone https://gitlab.com/dwt1/shell-color-scripts.git
+    # cd shell-color-scripts
+    # rm -rf /opt/shell-color-scripts || return 1
+    # sudo mkdir -p /opt/shell-color-scripts/colorscripts || return 1
+    # sudo cp -rf colorscripts/* /opt/shell-color-scripts/colorscripts
+    # sudo cp colorscript.sh /usr/bin/colorscript                          # colorscript -e crunch add to ~/.bashrc https://habr.com/ru/companies/cloud4y/articles/574450/
     echo -e "[!] Starship initialized.\n"
 fi
 
