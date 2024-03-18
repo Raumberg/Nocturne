@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# https://github.com/hyprwm/Hypr/blob/main/README.md
+
+
 # The follwoing will attempt to install all needed packages to run Hyprland
 # This is a quick and dirty script there are no error checking
 # This script is meant to run on a clean fresh system
