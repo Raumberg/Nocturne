@@ -43,7 +43,12 @@ if [ -f "$ISYAY" ]; then
     echo -e "yay was located, moving on.\n"
     yay -Suy
 else 
-    echo -e "yay is not here, please install yay. Exiting building.\n"
+    read -n1 -rep '[+] Set up yay? (y,n): ' YAY
+    if [[ $INST == "Y" || $INST == "y" ]]; then
+    git -C /tmp clone https://aur.archlinux.org/yay.git
+    cd /tmp/yay && makepkg -si
+    yay -Suy
+    echo -e 'Yay installed.'
     exit 
 fi
 
