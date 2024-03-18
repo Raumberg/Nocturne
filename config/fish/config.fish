@@ -1,9 +1,14 @@
 
-# Create aliases
+# Aliases
 alias cls="clear"
 alias vim="nvim"
 alias ls="lsd"
-# TODO: Replace journal aliases after switching to OpenRC
+alias noc.upgrade="sudo apt-get update && sudo apt-get upgrade"
+alias noc.tar="tar -cvzf"
+alias noc.untar="tar -xvf"
+alias noc.encr="gpg -o encr.gpg -c"
+alias noc.decr="gpg -o decr.pgp -d"
+
 
 # Display critical errors
 alias syslog_emerg="sudo dmesg --level=emerg,alert,crit"
