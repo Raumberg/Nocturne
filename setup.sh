@@ -55,9 +55,9 @@ fi
 ### Install all of the above pacakges ####
 read -n1 -rep '[+] Set up [N0cturne] envir0nment? (y,n): ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
-    yay -S --noconfirm hyprland alacritty waybar automake tmux libreoffice spacevim \      # polybar
-    swaybg swaylock-effects rofi wlogout mako thunar dunst fakeroot feh code neovim \
-    ttf-jetbrains-mono-nerd ttf-jetbrains-mono noto-fonts-emoji firefox obsidian flameshot \
+    yay -S --noconfirm hyprland alacritty waybar automake tmux libreoffice spacevim rofi-lbonn-wayland-git \  
+    swaybg swaylock-effects rofi wlogout mako thunar dunst fakeroot feh code neovim parallel \
+    ttf-jetbrains-mono-nerd ttf-jetbrains-mono noto-fonts-emoji firefox obsidian flameshot jq \
     polkit-gnome python-requests starship tree lsd calc neofetch gcc gedit python-pip ipython bpython \
     swappy grim slurp pamixer brightnessctl gvfs nano htop btop gnu-netcat cloc chromium gucharmap gthumb gnome-clocks \
     bluez bluez-utils lxappearance xfce4-settings ranger redshift vlc wget bleachbit cava i3lock-color ptpython \
