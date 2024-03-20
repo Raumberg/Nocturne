@@ -43,7 +43,7 @@ if [ -f "$ISYAY" ]; then
     echo -e "yay was located, moving on.\n"
     yay -Suy
 else 
-    read -n1 -rep '[+] Set up yay? (y,n): ' YAY
+    read -n1 -rep '[+] Set up yay? (y/n): ' YAY
     if [[ $INST == "Y" || $INST == "y" ]]; then
     git -C /tmp clone https://aur.archlinux.org/yay.git
     cd /tmp/yay && makepkg -si
@@ -53,7 +53,7 @@ else
 fi
 
 ### Install all of the above pacakges ####
-read -n1 -rep '[+] Set up [N0cturne] envir0nment? (y,n): ' INST
+read -n1 -rep '[+] Set up [N0cturne] envir0nment? (y/n): ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
     yay -S --noconfirm hyprland alacritty waybar automake tmux libreoffice spacevim rofi-lbonn-wayland-git \  
     swaybg swaylock-effects rofi wlogout mako thunar dunst fakeroot feh code neovim parallel \
@@ -72,14 +72,14 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     sudo ln -sf /usr/bin/alacritty /usr/bin/xterm
 fi
 
-read -n1 -rep '[+] Set up Rust? (y,n): ' RST
+read -n1 -rep '[+] Set up Rust? (y/n): ' RST
 if [[ $RST == "Y" || $RST == "y" ]]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rust.sh # echo???
     ./rust.sh
     echo -e "[!] Rust is ready.\n"
 
 ### Copy Config Files ###
-read -n1 -rep '[+] Set up [N0cturne] c0nfig files? (y,n): ' CFG
+read -n1 -rep '[+] Set up [N0cturne] c0nfig files? (y/n): ' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
     echo -e "[?] Building c0nfig files...\n"
     cp -R Nocturne/config ~/.config/
@@ -97,7 +97,7 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
 fi
 
 ### Install starship shell ###
-read -n1 -rep '[+] Set up starship shell? (y,n): ' STAR
+read -n1 -rep '[+] Set up starship shell? (y/n): ' STAR
 if [[ $STAR == "Y" || $STAR == "y" ]]; then
     # install the starship shell
     echo -e "[?] Updating .bashrc...\n"
@@ -115,7 +115,7 @@ if [[ $STAR == "Y" || $STAR == "y" ]]; then
 fi
 
 ### Install Firefox theme ###
-rean -n1 -rep '[+] Set up Firef0x themes? (y,n): ' FIRE
+rean -n1 -rep '[+] Set up Firef0x themes? (y/n): ' FIRE
 if [[ $FIRE == "Y" || $FIRE == "y" ]]; then
     timeout 10 firefox --headless
     sh firefox/install.sh
@@ -125,7 +125,7 @@ fi
 ### Building is done ###
 echo -e "[!] [N0cturne] is assembled.\n"
 echo -e "[!] Start by typing Hyprland (note the capital H).\n"
-read -n1 -rep '[+] M00nlight is waiting for you... Ready? (y,n): ' HYP
+read -n1 -rep '[+] M00nlight is waiting for you... Ready? (y/n): ' HYP
 if [[ $HYP == "Y" || $HYP == "y" ]]; then
     exec Hyprland
 else
