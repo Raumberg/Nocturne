@@ -83,6 +83,11 @@ read -n1 -rep '[+] Set up [N0cturne] c0nfig files? (y,n): ' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
     echo -e "[?] Building c0nfig files...\n"
     cp -R Nocturne/config ~/.config/
+    mkdir -p ~/Images
+    cp -r Nocturne/Images ~/Images
+    cp -r bin/ ~/
+    cp -r local ~/.local
+    cp -r themes ~/.themes
     echo -e "[!] C0nfig is ready.\n"
     
     # Set some files as exacutable 
