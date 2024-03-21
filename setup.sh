@@ -77,6 +77,7 @@ if [[ $RST == "Y" || $RST == "y" ]]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rust.sh # echo???
     ./rust.sh
     echo -e "[!] Rust is ready.\n"
+fi
 
 ### Copy Config Files ###
 read -n1 -rep '[+] Set up [N0cturne] c0nfig files? (y/n): ' CFG
