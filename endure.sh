@@ -28,7 +28,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
   i3lock-color jgmenu inter-font networkmanager-dmenu-git conky-lua bsp-layout zscroll \
   noise-suppression-for-voice starship lsof gamemode lib32-gamemode xdo bluez \
   bluez-utils bluez-libs bluez-tools
-  # INSTALLING PYTHON AND RUST
+  # INSTALLING PYTHON AND RUST NIGHTLY
   sudo pacman -S python-pip
   sudo pip install pylrc
   paru -S rust-nightly-bin gtk3
@@ -99,4 +99,12 @@ if [[ $BLDSPT == "Y" || $BLDSPT == "y" ]]; then
   spicetify config color_scheme tokyonight
   spicetify config extensions adblock.js
   spicetify backup apply
+fi
+
+### RUST ###
+read -n1 -rep '[+] Set up Rust? (y/n): ' RST
+if [[ $RST == "Y" || $RST == "y" ]]; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rust.sh
+    ./rust.sh
+    echo -e "[!] Rust is ready.\n"
 fi
