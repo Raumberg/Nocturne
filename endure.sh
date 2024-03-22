@@ -1,5 +1,8 @@
 #!/bin/bash
-#### CHECKING/INSTALLING YAY ####
+
+mkdir ~/Downloads
+
+### CHECKING/INSTALLING YAY ###
 ISYAY=/sbin/yay
 if [ -f "$ISYAY" ]; then 
     echo -e "yay was located, m0ving 0n.\n"
@@ -14,7 +17,17 @@ else
     exit 
 fi
 
-### Install all packages ####
+### PARU INSTALLING ###
+read -n1 -rep '[+] Install paru? (y/n): ' PARU
+if [[ $PARU == "Y" || $PARU == "y" ]]; then
+    cd ~/Downloads
+    sudo pacman -S --needed base-devel
+    git clone https://aur.archlinux.org/paru.git
+    cd paru
+    makepkg -si
+fi
+
+### PACKAGES INSTALL ####
 read -n1 -rep '[+] Set up [N0cturne] envir0nment? (y/n): ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
   # CREATING DOWNLOADS FOLDER
