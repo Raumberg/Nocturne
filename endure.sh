@@ -1,123 +1,354 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗     ███████╗██████╗
+#██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║     ██╔════╝██╔══██╗
+#██║██╔██╗ ██║███████╗   ██║   ███████║██║     ██║     █████╗  ██████╔╝
+#██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     ██╔══╝  ██╔══██╗
+#██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗███████╗██║  ██║
+#╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
+#   Script to install [N0cturne]
+#   Author: Raumberg
+#   url: https://github.com/Raumberg
 
-mkdir ~/Downloads
+CRE=$(tput setaf 1)
+CYE=$(tput setaf 3)
+CGR=$(tput setaf 2)
+CBL=$(tput setaf 4)
+BLD=$(tput bold)
+CNC=$(tput sgr0)
 
-### CHECKING/INSTALLING YAY ###
-ISYAY=/sbin/yay
-if [ -f "$ISYAY" ]; then 
-    echo -e "yay was located, m0ving 0n.\n"
-    yay -Suy
-else 
-    read -n1 -rep '[+] Set up yay? (y/n): ' YAY
-    if [[ $INST == "Y" || $INST == "y" ]]; then
-    git -C /tmp clone https://aur.archlinux.org/yay.git
-    cd /tmp/yay && makepkg -si
-    yay -Suy
-    echo -e 'Yay installed.'
-    exit 
+backup_folder=~/.Backup
+date=$(date +%Y%m%d-%H%M%S)
+
+logo () {
+
+    local text="${1:?}"
+    echo -en "
+    ██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗     ███████╗██████╗
+    ██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║     ██╔════╝██╔══██╗
+    ██║██╔██╗ ██║███████╗   ██║   ███████║██║     ██║     █████╗  ██████╔╝
+    ██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     ██╔══╝  ██╔══██╗
+    ██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗███████╗██║  ██║
+    ╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
+    [N0cturne] Installer\n\n"
+    printf ' %s [%s%s %s%s %s]%s\n\n' "${CRE}" "${CNC}" "${CYE}" "${text}" "${CNC}" "${CRE}" "${CNC}"
+}
+
+########## ---------- You must not run this as root ---------- ##########
+
+if [ "$(id -u)" = 0 ]; then
+    echo "Disable r00t."
+    exit 1
 fi
 
-### PARU INSTALLING ###
-read -n1 -rep '[+] Install paru? (y/n): ' PARU
-if [[ $PARU == "Y" || $PARU == "y" ]]; then
-    cd ~/Downloads
-    sudo pacman -S --needed base-devel
-    git clone https://aur.archlinux.org/paru.git
-    cd paru
-    makepkg -si
+home_dir=$HOME
+current_dir=$(pwd)
+
+if [ "$current_dir" != "$home_dir" ]; then
+    printf "%s%sThe script must be executed fr0m the HOME direct0ry.%s\n" "${BLD}" "${CYE}" "${CNC}"
+    exit 1
 fi
 
-### PACKAGES INSTALL ####
-read -n1 -rep '[+] Set up [N0cturne] envir0nment? (y/n): ' INST
-if [[ $INST == "Y" || $INST == "y" ]]; then
-  # CREATING DOWNLOADS FOLDER
-  mkdir ~/Downloads
-  # INSTALLING PACKAGES
-  paru -S kitty polybar rofi bspwm-rounded-corners-git xdg-user-dirs nautilus xorg \
-  pavucontrol blueberry xfce4-power-manager feh lxappearance papirus-icon-theme file-roller \
-  gtk-engines gtk-engine-murrine neofetch imagemagick parcellite xclip maim gpick curl jq tint2 \
-  zsh moreutils recode dunst plank python-xdg redshift mate-polkit xfce4-settings mpv yaru-sound-theme \
-  fish alsa-utils slim xorg-xinit brightnessctl acpi mugshot playerctl python-pytz glava wmctrl \
-  i3lock-color jgmenu inter-font networkmanager-dmenu-git conky-lua bsp-layout zscroll \
-  noise-suppression-for-voice starship lsof gamemode lib32-gamemode xdo bluez \
-  bluez-utils bluez-libs bluez-tools
-  # INSTALLING PYTHON AND RUST NIGHTLY
-  sudo pacman -S python-pip
-  sudo pip install pylrc
-  paru -S rust-nightly-bin gtk3
+########## ---------- Welcome ---------- ##########
+
+logo "Welcome!"
+printf '%s%sHell0 and welc0me to [N0cturne].%s\n\n' "${BLD}" "${CRE}" "${CNC}"
+
+while true; do
+    read -rp " D0 y0u wish t0 c0ntinue? [y/N]: " yn
+    case $yn in
+        [Yy]* ) break ;;
+        [Nn]* ) exit ;;
+        * ) printf " Err0r: write 'y' or 'n'\n\n" ;;
+    esac
+done
+clear
+
+########## ---------- Install packages ---------- ##########
+
+logo "Installing packages.."
+
+deps=(alacritty base-devel brightnessctl bspwm dunst feh geany git imagemagick jq htop \
+			        jgmenu libwebp lsd maim mpc mpd neovim ncmpcpp npm pamixer pacman-contrib \
+			        papirus-icon-theme physlock picom playerctl polybar polkit-gnome python-gobject ranger \
+			        rofi rustup sxhkd ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd \
+			        ttf-joypixels ttf-terminus-nerd ueberzug webp-pixbuf-loader xclip xdg-user-dirs \
+			        xdo xdotool xorg-xdpyinfo xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot firefox \
+			        xorg-xwininfo zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+
+is_installed() {
+    pacman -Q "$1" &> /dev/null
+}
+
+printf "%s%sChecking f0r required packages...%s\n" "${BLD}" "${CBL}" "${CNC}"
+for pac in "${deps[@]}"; do
+    if ! is_installed "$pac"; then
+        if sudo pacman -S "$pac" --noconfirm >/dev/null 2>> Errors.log; then
+            printf "%s%s%s %sinstalled succesfully.%s\n" "${BLD}" "${CYE}" "$pac" "${CBL}" "${CNC}"
+            sleep 1
+        else
+            printf "%s%s%s %snot installed correctly. See %sErrors.log %sfor more details.%s\n" "${BLD}" "${CYE}" "$paquete" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
+            sleep 1
+        fi
+    else
+        printf '%s%s%s %sis already installed.%s\n' "${BLD}" "${CYE}" "$paquete" "${CGR}" "${CNC}"
+        sleep 1
+    fi
+done
+sleep 5
+clear
+
+########## ---------- Preparing Folders ---------- ##########
+
+# verify folders and prepare archives
+if [ ! -e "$HOME/.config/user-dirs.dirs" ]; then
+    xdg-user-dirs-update
 fi
 
-read -n1 -rep '[+] Build up [N0cturne]? (y/n): ' BUILD
-if [[ $BUILD == "Y" || $BUILD == "y" ]]; then
-  cd ~/Downloads
-  git clone https://github.com/elkowar/eww.git
-  cd eww
-  cargo build --release -j $(nproc)
-  cd target/release
-  sudo mv eww /usr/bin/eww
+########## ---------- Cloning the repo ---------- ##########
+
+logo "Setting up [N0cturne]"
+
+repo_url="https://github.com/Raumberg/Nocturne"
+repo_dir="$HOME/nocturne"
+
+# remove existing dots
+if [ -d "$repo_dir" ]; then
+    printf "Removing existing dotfiles repository\n"
+    rm -rf "$repo_dir"
 fi
 
-read -n1 -rep '[+] Build up XDP? (y/n): ' BLDSXP
-if [[ $BLDSXP == "Y" || $BLDSXP == "y" ]]; then
-  sudo pacman -S base-devel
-  cd ~/Downloads
-  git clone https://github.com/baskerville/xqp.git
-  cd xqp
-  make
-  sudo make install
+# cloning the repo
+printf "Cloning [N0cturne] from %s\n" "$repo_url"
+git clone --depth=1 "$repo_url" "$repo_dir"
+sleep 2
+clear
+
+########## ---------- Backup files ---------- ##########
+
+logo "Backup files"
+
+printf "[Ne0vim].\n\n"
+
+while true; do
+    read -rp "Set up Ne0vim config? (y/n): " try_nvim
+    if [[ "$try_nvim" == "y" || "$try_nvim" == "n" ]]; then
+        break
+    else
+        echo "Invalid input. Please enter 'y' or 'n'."
+    fi
+done
+
+printf "\nBackup files will be stored in %s%s%s/.Backup%s \n\n" "${BLD}" "${CRE}" "$HOME" "${CNC}"
+sleep 10
+
+[ ! -d "$backup_folder" ] && mkdir -p "$backup_folder"
+
+for folder in bspwm alacritty picom rofi eww sxhkd dunst polybar ncmpcpp ranger zsh mpd paru; do
+    if [ -d "$HOME/.config/$folder" ]; then
+        if mv "$HOME/.config/$folder" "$backup_folder/${folder}_$date" 2>> Errors.log; then
+            printf "%s%s%s folder backed up successfully at %s%s/%s_%s%s\n" "${BLD}" "${CGR}" "$folder" "${CBL}" "$backup_folder" "$folder" "$date" "${CNC}"
+            sleep 1
+        else
+            printf "%s%sFailed to backup %s folder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "$folder" "${CBL}" "${CNC}"
+            sleep 1
+        fi
+    else
+        printf "%s%s%s folder does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "$folder" "${CYE}" "${CNC}"
+        sleep 1
+    fi
+done
+
+if [[ $try_nvim == "y" ]]; then
+        # Download nvim
+    if [ -d "$HOME/.config/nvim" ]; then
+        if mv "$HOME/.config/nvim" "$backup_folder/nvim_$date" 2>> Errors.log; then
+                printf "%s%snvim folder backed up successfully at %s%s/nvim_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "$date" "${CNC}"
+                sleep 1
+            else
+                printf "%s%sFailed to backup nvim folder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
+                sleep 1
+        fi
+        else
+            printf "%s%snvim folder does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
+            sleep 1
+    fi
 fi
 
-read -n1 -rep '[+] Build up Libraries? (y/n): ' BLDLIBS
-if [[ $BLDLIBS == "Y" || $BLDLIBS == "y" ]]; then
-  sudo pacman -S libconfig libev libxdg-basedir pcre pixman \
-  xcb-util-image xcb-util-renderutil hicolor-icon-theme libglvnd \
-  libx11 libxcb libxext libdbus asciidoc uthash
-  cd ~/Downloads
-  git clone https://github.com/pijulius/picom.git
-  cd picom/
-  meson --buildtype=release . build --prefix=/usr -Dwith_docs=true
-  sudo ninja -C build install
-  sudo usermod -aG adm $USER
+for folder in "$HOME"/.mozilla/firefox/*.default-release/chrome; do
+    if [ -d "$folder" ]; then
+        if mv "$folder" "$backup_folder"/chrome_"$date" 2>> Errors.log; then
+            printf "%s%sChrome folder backed up successfully at %s%s/chrome_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "${date}" "${CNC}"
+        else
+            printf "%s%sFailed to backup Chrome folder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
+        fi
+    else
+        printf "%s%sThe folder Chrome does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
+    fi
+done
+
+for file in "$HOME"/.mozilla/firefox/*.default-release/user.js; do
+    if [ -f "$file" ]; then
+        if mv "$file" "$backup_folder"/user.js_"$date" 2>> Errors.log; then
+            printf "%s%suser.js file backed up successfully at %s%s/user.js_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "${date}" "${CNC}"
+        else
+            printf "%s%sFailed to backup user.js file. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
+        fi
+    else
+        printf "%s%sThe file user.js does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
+    fi
+done
+
+if [ -f ~/.zshrc ]; then
+    if mv ~/.zshrc "$backup_folder"/.zshrc_"$date" 2>> Errors.log; then
+        printf "%s%s.zshrc file backed up successfully at %s%s/.zshrc_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "${date}" "${CNC}"
+    else
+        printf "%s%sFailed to backup .zshrc file. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
+    fi
+else
+    printf "%s%sThe file .zshrc does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
 fi
 
-### THEMES ###
-read -n1 -rep '[+] Build up Themes? (y/n): ' BLDTMS
-if [[ $BLDTMS == "Y" || $BLDTMS == "y" ]]; then
-  cd ~/Downloads
-  git clone https://github.com/Fausto-Korpsvart/Tokyo-Night-GTK-Theme.git
-  cd Tokyo-Night-GTK-Theme/
-  mv themes/Tokyonight-Dark-BL /usr/share/themes/
-  
-  cd ~/Downloads
-  git clone https://github.com/syndrizzle/hotfiles.git -b bspwm
-  cd hotfiles
-  cp -r .config .scripts .local .cache .wallpapers ~/
-  cp .xinitrc .gtkrc-2.0 ~/
-  
-  cd .fonts
-  mv * /usr/share/fonts
-  
-  cd etc/
-  mv slim.conf environment /etc/
-  sudo cp -r usr/* /usr/
+printf "%s%sD0ne.%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+sleep 5
+
+########## ---------- Copy the Rice! ---------- ##########
+
+logo "Installing [N0cturne] configs..."
+printf "C0pying files t0 respective direct0ries..\n"
+
+[ ! -d ~/.config ] && mkdir -p ~/.config
+[ ! -d ~/.local/bin ] && mkdir -p ~/.local/bin
+[ ! -d ~/.local/share ] && mkdir -p ~/.local/share
+
+for dirs in ~/dotfiles/config/*; do
+    dir_name=$(basename "$dirs")
+    if [[ $dir_name == "nvim" && $try_nvim != "y" ]]; then
+        continue
+    fi
+    if cp -R "${dirs}" ~/.config/ 2>> RiceError.log; then
+        printf "%s%s%s %sc0nfigurati0n installed succesfully%s\n" "${BLD}" "${CYE}" "${dir_name}" "${CGR}" "${CNC}"
+        sleep 1
+    else
+        printf "%s%s%s %sc0nfigurati0n failed to been installed, see %sErrors.log %sf0r m0re details.%s\n" "${BLD}" "${CYE}" "${dir_name}" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
+        sleep 1
+    fi
+done
+
+for folder in applications asciiart fonts startup-page; do
+    if cp -R ~/dotfiles/misc/$folder ~/.local/share/ 2>> Errors.log; then
+        printf "%s%s%s %sf0lder c0pied succesfully!%s\n" "${BLD}" "${CYE}" "$folder" "${CGR}" "${CNC}"
+        sleep 1
+    else
+        printf "%s%s%s %sf0lder failed t0 c0py, see %sErrors.log %sf0r m0re details.%s\n" "${BLD}" "${CYE}" "$folder" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
+        sleep 1
+    fi
+done
+
+if cp -R ~/dotfiles/misc/bin ~/.local/ 2>> Errors.log; then
+    printf "%s%sbin %sf0lder c0pied succesfully!%s\n" "${BLD}" "${CYE}" "${CGR}" "${CNC}"
+    sleep 1
+else
+    printf "%s%sbin %sf0lder failed t0 c0py, see %sErrors.log %sf0r m0re details.%s\n" "${BLD}" "${CYE}" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
+    sleep 1
 fi
 
-### SPOTIFY ###
-read -n1 -rep '[+] Build up Sp0tify? (y/n): ' BLDSPT
-if [[ $BLDSPT == "Y" || $BLDSPT == "y" ]]; then
-  paru -S spicetify-cli-git
-  sudo chmod a+wr /opt/spotify
-  sudo chmod a+wr /opt/spotify/Apps -R
-  spicetify config current_theme Ziro
-  spicetify config color_scheme tokyonight
-  spicetify config extensions adblock.js
-  spicetify backup apply
+if cp -R ~/dotfiles/misc/firefox/* ~/.mozilla/firefox/*.default-release/ 2>> RiceError.log; then
+    printf "%s%sFiref0x theme %sc0pied succesfully.%s\n" "${BLD}" "${CYE}" "${CGR}" "${CNC}"
+    sleep 1
+else
+    printf "%s%sFiref0x theme %sfailed t0 c0py, see %sErrors.log %sf0r m0re details.%s\n" "${BLD}" "${CYE}" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
+    sleep 1
 fi
 
-### RUST ###
-read -n1 -rep '[+] Set up Rust? (y/n): ' RST
-if [[ $RST == "Y" || $RST == "y" ]]; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rust.sh
-    ./rust.sh
-    echo -e "[!] Rust is ready.\n"
+sed -i "s/user_pref(\"browser.startup.homepage\", \"file:\/\/\/home\/z0mbi3\/.local\/share\/startup-page\/index.html\")/user_pref(\"browser.startup.homepage\", \"file:\/\/\/home\/$USER\/.local\/share\/startup-page\/index.html\")/" "$HOME"/.mozilla/firefox/*.default-release/user.js
+sed -i "s/name: 'rmbrg'/name: '$USER'/" "$HOME"/.local/share/startup-page/config.js
+cp -f "$HOME"/dotfiles/home/.zshrc "$HOME"
+fc-cache -rv >/dev/null 2>&1
+
+printf "\n\n%s%sFiles c0pied succesfully!!%s\n" "${BLD}" "${CGR}" "${CNC}"
+sleep 5
+
+########## ---------- Installing Paru & others ---------- ##########
+
+logo "installing Paru, Eww, tdrop & xqp"
+
+# Installing Paru
+if command -v paru >/dev/null 2>&1; then
+    printf "%s%sParu is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
+else
+    printf "%s%sInstalling paru%s\n" "${BLD}" "${CBL}" "${CNC}"
+    {
+        cd "$HOME" || exit
+        git clone https://aur.archlinux.org/paru-bin.git
+        cd paru-bin || exit
+        makepkg -si --noconfirm
+        } || {
+        printf "\n%s%sFailed t0 install Paru. Y0u may need t0 install it manually%s\n" "${BLD}" "${CRE}" "${CNC}"
+    }
 fi
+
+# Intalling tdrop for scratchpads
+if command -v tdrop >/dev/null 2>&1; then
+    printf "\n%s%sTdr0p is already installed.%s\n" "${BLD}" "${CGR}" "${CNC}"
+else
+    printf "\n%s%sInstalling tdr0p.%s\n" "${BLD}" "${CBL}" "${CNC}"
+    paru -S tdrop-git --skipreview --noconfirm
+fi
+
+# Intalling xqpp
+if command -v xqp >/dev/null 2>&1; then
+    printf "\n%s%sxqp is already installed.%s\n" "${BLD}" "${CGR}" "${CNC}"
+else
+    printf "\n%s%sInstalling xqp.%s\n" "${BLD}" "${CBL}" "${CNC}"
+    paru -S xqp --skipreview --noconfirm
+fi
+
+# Installing Eww
+if command -v eww >/dev/null 2>&1; then
+    printf "\n%s%sEww is already installed.%s\n" "${BLD}" "${CGR}" "${CNC}"
+else
+    printf "\n%s%sInstalling Eww, this c0uld take 10 mins or m0re.%s\n" "${BLD}" "${CBL}" "${CNC}"
+    {
+        sudo pacman -S rustup --noconfirm
+        cd "$HOME" || exit
+        git clone https://github.com/elkowar/eww
+        cd eww || exit
+        cargo build --release --no-default-features --features x11
+        sudo install -m 755 "$HOME/eww/target/release/eww" -t /usr/bin/
+        cd "$HOME" || exit
+        rm -rf {paru-bin,.cargo,.rustup,eww}
+        } || {
+        printf "\n%s%sFailed t0 install Eww. Y0u may need to install it manually%s\n" "${BLD}" "${CRE}" "${CNC}"
+    }
+fi
+
+########## ---------- Enabling MPD service ---------- ##########
+
+logo "Enabling mpd service"
+
+# Verifica si el servicio mpd está habilitado a nivel global (sistema)
+if systemctl is-enabled --quiet mpd.service; then
+    printf "\n%s%sDisabling and stopping the global mpd service%s\n" "${BLD}" "${CBL}" "${CNC}"
+    sudo systemctl stop mpd.service
+    sudo systemctl disable mpd.service
+fi
+
+printf "\n%s%sEnabling and starting the user-level mpd service%s\n" "${BLD}" "${CYE}" "${CNC}"
+systemctl --user enable --now mpd.service
+
+printf "%s%sDone!!%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+sleep 2
+
+########## --------- Changing shell to zsh ---------- ##########
+
+logo "Changing default shell to zsh"
+
+if [[ $SHELL != "/usr/bin/zsh" ]]; then
+    printf "\n%s%sChanging y0ur shell to zsh. Root?%s\n\n" "${BLD}" "${CYE}" "${CNC}"
+    # Cambia la shell a zsh
+    chsh -s /usr/bin/zsh
+    printf "%s%sShell changed to zsh. Please reb00t.%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+else
+    printf "%s%sShell is already zsh\nPlease, reb00t the system.%s\n" "${BLD}" "${CGR}" "${CNC}"
+fi
+zsh
