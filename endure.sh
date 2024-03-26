@@ -14,6 +14,8 @@
 #
 #   To change GTK Theme (Thunar and other system apps), use lxappearance (sudo pacman -S laxappearance). 
 #   Download the GTK theme and put it in ~/.themes and in lxappearance it will be in the list.
+#
+#   To disable ASCII arts in Zsh open the .zshrc file located in your HOME and delete the last line, which would be $HOME/.local/bin/colorscript -r
 
 CRE=$(tput setaf 1)
 CYE=$(tput setaf 3)
