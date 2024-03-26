@@ -5,12 +5,15 @@
 #	██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     ██╔══╝  ██╔══██╗
 #	██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗███████╗██║  ██║
 #	╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
-#   Script to install [N0cturne]
-#   Author: Raumberg
-#   url: https://github.com/Raumberg
+#   			Script to install [N0cturne]
+#   			Author: Raumberg
+#   			url: https://github.com/Raumberg
 #
 #   What to do after installation: 	install the following packages (sudo pacman -S lightdm lightdm-gtk-greeter configuration-lightdm-gtk-greeter)
 #   Activate the service:   		sudo systemctl enable lightdm.service
+#
+#   To change GTK Theme (Thunar and other system apps), use lxappearance (sudo pacman -S laxappearance). 
+#   Download the GTK theme and put it in ~/.themes and in lxappearance it will be in the list.
 
 CRE=$(tput setaf 1)
 CYE=$(tput setaf 3)
