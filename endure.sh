@@ -94,7 +94,7 @@ for pac in "${deps[@]}"; do
             printf "%s%s%s %sinstalled succesfully.%s\n" "${BLD}" "${CYE}" "$pac" "${CBL}" "${CNC}"
             sleep 1
         else
-            printf "%s%s%s %snot installed correctly. See %sErrors.log %sfor more details.%s\n" "${BLD}" "${CYE}" "$paquete" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
+            printf "%s%s%s %sn0t installed. See %sErrors.log %sf0r m0re details.%s\n" "${BLD}" "${CYE}" "$paquete" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
             sleep 1
         fi
     else
@@ -121,12 +121,12 @@ repo_dir="$HOME/nocturne"
 
 # remove existing dots
 if [ -d "$repo_dir" ]; then
-    printf "Removing existing dotfiles repository\n"
+    printf "Rem0ving existing d0tfiles repository\n"
     rm -rf "$repo_dir"
 fi
 
 # cloning the repo
-printf "Cloning [N0cturne] from %s\n" "$repo_url"
+printf "Cl0ning [N0cturne] fr0m %s\n" "$repo_url"
 git clone --depth=1 "$repo_url" "$repo_dir"
 sleep 2
 clear
@@ -138,15 +138,15 @@ logo "Backup files"
 printf "[Ne0vim].\n\n"
 
 while true; do
-    read -rp "Set up Ne0vim config? (y/n): " try_nvim
+    read -rp "Set up Ne0vim c0nfig? (y/n): " try_nvim
     if [[ "$try_nvim" == "y" || "$try_nvim" == "n" ]]; then
         break
     else
-        echo "Invalid input. Please enter 'y' or 'n'."
+        echo "Invalid input. Please enter 'y' 0r 'n'."
     fi
 done
 
-printf "\nBackup files will be stored in %s%s%s/.Backup%s \n\n" "${BLD}" "${CRE}" "$HOME" "${CNC}"
+printf "\nBackup files will be st0red in %s%s%s/.Backup%s \n\n" "${BLD}" "${CRE}" "$HOME" "${CNC}"
 sleep 10
 
 [ ! -d "$backup_folder" ] && mkdir -p "$backup_folder"
@@ -154,14 +154,14 @@ sleep 10
 for folder in bspwm alacritty picom rofi eww sxhkd dunst polybar ncmpcpp ranger zsh mpd paru; do
     if [ -d "$HOME/.config/$folder" ]; then
         if mv "$HOME/.config/$folder" "$backup_folder/${folder}_$date" 2>> Errors.log; then
-            printf "%s%s%s folder backed up successfully at %s%s/%s_%s%s\n" "${BLD}" "${CGR}" "$folder" "${CBL}" "$backup_folder" "$folder" "$date" "${CNC}"
+            printf "%s%s%s f0lder backed up successfully at %s%s/%s_%s%s\n" "${BLD}" "${CGR}" "$folder" "${CBL}" "$backup_folder" "$folder" "$date" "${CNC}"
             sleep 1
         else
-            printf "%s%sFailed to backup %s folder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "$folder" "${CBL}" "${CNC}"
+            printf "%s%sFailed t0 backup %s folder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "$folder" "${CBL}" "${CNC}"
             sleep 1
         fi
     else
-        printf "%s%s%s folder does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "$folder" "${CYE}" "${CNC}"
+        printf "%s%s%s f0lder d0es n0t exist, %sn0 backup needed%s\n" "${BLD}" "${CGR}" "$folder" "${CYE}" "${CNC}"
         sleep 1
     fi
 done
@@ -170,14 +170,14 @@ if [[ $try_nvim == "y" ]]; then
         # Download nvim
     if [ -d "$HOME/.config/nvim" ]; then
         if mv "$HOME/.config/nvim" "$backup_folder/nvim_$date" 2>> Errors.log; then
-                printf "%s%snvim folder backed up successfully at %s%s/nvim_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "$date" "${CNC}"
+                printf "%s%snvim f0lder backed up successfully at %s%s/nvim_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "$date" "${CNC}"
                 sleep 1
             else
-                printf "%s%sFailed to backup nvim folder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
+                printf "%s%sFailed t0 backup nvim folder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
                 sleep 1
         fi
         else
-            printf "%s%snvim folder does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
+            printf "%s%snvim f0lder d0es n0t exist, %sn0 backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
             sleep 1
     fi
 fi
@@ -185,12 +185,12 @@ fi
 for folder in "$HOME"/.mozilla/firefox/*.default-release/chrome; do
     if [ -d "$folder" ]; then
         if mv "$folder" "$backup_folder"/chrome_"$date" 2>> Errors.log; then
-            printf "%s%sChrome folder backed up successfully at %s%s/chrome_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "${date}" "${CNC}"
+            printf "%s%sChr0me f0lder backed up successfully at %s%s/chrome_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "${date}" "${CNC}"
         else
-            printf "%s%sFailed to backup Chrome folder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
+            printf "%s%sFailed t0 backup Chr0me f0lder. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
         fi
     else
-        printf "%s%sThe folder Chrome does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
+        printf "%s%sThe f0lder Chr0me d0es n0t exist, %sn0 backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
     fi
 done
 
@@ -199,10 +199,10 @@ for file in "$HOME"/.mozilla/firefox/*.default-release/user.js; do
         if mv "$file" "$backup_folder"/user.js_"$date" 2>> Errors.log; then
             printf "%s%suser.js file backed up successfully at %s%s/user.js_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "${date}" "${CNC}"
         else
-            printf "%s%sFailed to backup user.js file. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
+            printf "%s%sFailed t0 backup user.js file. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
         fi
     else
-        printf "%s%sThe file user.js does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
+        printf "%s%sThe file user.js d0es n0t exist, %sn0 backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
     fi
 done
 
@@ -210,10 +210,10 @@ if [ -f ~/.zshrc ]; then
     if mv ~/.zshrc "$backup_folder"/.zshrc_"$date" 2>> Errors.log; then
         printf "%s%s.zshrc file backed up successfully at %s%s/.zshrc_%s%s\n" "${BLD}" "${CGR}" "${CBL}" "$backup_folder" "${date}" "${CNC}"
     else
-        printf "%s%sFailed to backup .zshrc file. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
+        printf "%s%sFailed t0 backup .zshrc file. See %sErrors.log%s\n" "${BLD}" "${CRE}" "${CBL}" "${CNC}"
     fi
 else
-    printf "%s%sThe file .zshrc does not exist, %sno backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
+    printf "%s%sThe file .zshrc d0es n0t exist, %sn0 backup needed%s\n" "${BLD}" "${CGR}" "${CYE}" "${CNC}"
 fi
 
 printf "%s%sD0ne.%s\n\n" "${BLD}" "${CGR}" "${CNC}"
@@ -221,7 +221,7 @@ sleep 5
 
 ########## ---------- Copy the Rice! ---------- ##########
 
-logo "Installing [N0cturne] configs..."
+logo "Building [N0cturne] c0nfigs..."
 printf "C0pying files t0 respective direct0ries..\n"
 
 [ ! -d ~/.config ] && mkdir -p ~/.config
@@ -237,7 +237,7 @@ for dirs in ~/dotfiles/config/*; do
         printf "%s%s%s %sc0nfigurati0n installed succesfully%s\n" "${BLD}" "${CYE}" "${dir_name}" "${CGR}" "${CNC}"
         sleep 1
     else
-        printf "%s%s%s %sc0nfigurati0n failed to been installed, see %sErrors.log %sf0r m0re details.%s\n" "${BLD}" "${CYE}" "${dir_name}" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
+        printf "%s%s%s %sc0nfigurati0n failed t0 been installed, see %sErrors.log %sf0r m0re details.%s\n" "${BLD}" "${CYE}" "${dir_name}" "${CRE}" "${CBL}" "${CRE}" "${CNC}"
         sleep 1
     fi
 done
@@ -326,36 +326,36 @@ else
         cd "$HOME" || exit
         rm -rf {paru-bin,.cargo,.rustup,eww}
         } || {
-        printf "\n%s%sFailed t0 install Eww. Y0u may need to install it manually%s\n" "${BLD}" "${CRE}" "${CNC}"
+        printf "\n%s%sFailed t0 install Eww. Y0u may need t0 install it manually%s\n" "${BLD}" "${CRE}" "${CNC}"
     }
 fi
 
 ########## ---------- Enabling MPD service ---------- ##########
 
-logo "Enabling mpd service"
+logo "Enabling MPD service"
 
 # Verifica si el servicio mpd está habilitado a nivel global (sistema)
 if systemctl is-enabled --quiet mpd.service; then
-    printf "\n%s%sDisabling and stopping the global mpd service%s\n" "${BLD}" "${CBL}" "${CNC}"
+    printf "\n%s%sDisabling and st0pping the gl0bal MPD service%s\n" "${BLD}" "${CBL}" "${CNC}"
     sudo systemctl stop mpd.service
     sudo systemctl disable mpd.service
 fi
 
-printf "\n%s%sEnabling and starting the user-level mpd service%s\n" "${BLD}" "${CYE}" "${CNC}"
+printf "\n%s%sEnabling and starting the user-level MPD service%s\n" "${BLD}" "${CYE}" "${CNC}"
 systemctl --user enable --now mpd.service
 
-printf "%s%sDone!!%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+printf "%s%sD0ne.%s\n\n" "${BLD}" "${CGR}" "${CNC}"
 sleep 2
 
 ########## --------- Changing shell to zsh ---------- ##########
 
-logo "Changing default shell to zsh"
+logo "Changing default shell t0 zsh"
 
 if [[ $SHELL != "/usr/bin/zsh" ]]; then
-    printf "\n%s%sChanging y0ur shell to zsh. Root?%s\n\n" "${BLD}" "${CYE}" "${CNC}"
+    printf "\n%s%sChanging y0ur shell t0 zsh. R00t?%s\n\n" "${BLD}" "${CYE}" "${CNC}"
     # Cambia la shell a zsh
     chsh -s /usr/bin/zsh
-    printf "%s%sShell changed to zsh. Please reb00t.%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+    printf "%s%sShell changed t0 zsh. Please, reb00t.%s\n\n" "${BLD}" "${CGR}" "${CNC}"
 else
     printf "%s%sShell is already zsh\nPlease, reb00t the system.%s\n" "${BLD}" "${CGR}" "${CNC}"
 fi
